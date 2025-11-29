@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiverr Automation Hub | AI-Powered Freelancer Growth</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Tailwind Configuration */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'electric-purple': '#7A3FFF',
+                        'charcoal': '#1F2937',
+                        'deep-black': '#0A0A0A',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'purple-glow': '0 0 40px rgba(122, 63, 255, 0.5)',
+                        'sm-purple-glow': '0 0 10px rgba(122, 63, 255, 0.2)',
+                    }
+                }
+            }
+        }
+        /* Base styling for the dark theme */
+        body {
+            background-color: #0A0A0A; /* Deep Black */
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a modern look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #374151; /* Darker charcoal */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+        /* Icon styling helper */
+        .icon {
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+
+    <!-- Firebase SDK Setup (Mandatory for Canvas environment) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('debug');
+
+        // Global variables provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth;
+
+        // Initialize Firebase
+        if (Object.keys(firebaseConfig).length > 0) {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            // Authentication
+            async function authenticate() {
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        console.log("Firebase signed in with custom token.");
+                    } else {
+                        await signInAnonymously(auth);
+                        console.log("Firebase signed in anonymously.");
+                    }
+                } catch (error) {
+                    console.error("Firebase authentication error:", error);
+                }
+            }
+
+            authenticate();
+        } else {
+            console.warn("Firebase configuration is missing. Data persistence features will not be available.");
+        }
+    </script>
+    <!-- End Firebase Setup -->
+
+
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-deep-black bg-opacity-95 backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-3xl font-extrabold tracking-tight text-white flex items-center">
+                <span class="text-electric-purple mr-1">Fiverra</span>
+                <span class="text-white">Hub</span>
+            </a>
+            <!-- Nav Links (Desktop) -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#features" class="text-gray-300 hover:text-electric-purple transition duration-200">Features</a>
+                <a href="#benefits" class="text-gray-300 hover:text-electric-purple transition duration-200">Impact</a>
+                <a href="#pricing" class="text-gray-300 hover:text-electric-purple transition duration-200">Pricing</a>
+                <a href="#contact" class="text-gray-300 hover:text-electric-purple transition duration-200">Contact</a>
+            </nav>
+            <!-- CTA Button -->
+            <a href="#" class="hidden md:block bg-electric-purple text-white font-semibold py-2 px-4 rounded-xl hover:bg-opacity-90 shadow-purple-glow transition duration-300 text-sm">
+                Start Free Trial
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="py-20 md:py-32 text-center relative overflow-hidden">
+            <!-- Background Gradient/Visual Element -->
+            <div class="absolute inset-0 z-0 opacity-10" style="background: radial-gradient(circle at 50% 10%, #7A3FFF20, #0A0A0A 60%);"></div>
+
+            <div class="max-w-5xl mx-auto px-4 relative z-10">
+                <span class="text-sm font-semibold uppercase tracking-widest text-electric-purple mb-4 block">
+                    Scale Your Freelance Business
+                </span>
+                <h1 class="text-5xl sm:text-7xl font-extrabold leading-tight mb-6 bg-clip-text text-transparent"
+                    style="background-image: linear-gradient(180deg, white, #B0B0B0);">
+                    The <span class="text-electric-purple">AI Engine</span> for Fiverr Sellers
+                </h1>
+                <p class="text-xl text-gray-400 mb-10 max-w-3xl mx-auto">
+                    Stop struggling to manage clients manually. Fiverr Automation Hub is the modern, intelligent platform that removes stress, saves hours, and helps you achieve true freelancing freedom.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#" class="w-full sm:w-auto bg-electric-purple text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-electric-purple/50 hover:shadow-purple-glow transition duration-300 transform hover:scale-[1.02]">
+                        Get Started - It's Free
+                    </a>
+                    <a href="#features" class="w-full sm:w-auto text-gray-300 border border-gray-700 font-semibold py-3 px-8 rounded-xl hover:bg-gray-800 transition duration-300">
+                        See All Features
+                    </a>
+                </div>
+                <div class="mt-16 bg-gray-900 border border-gray-800 p-2 rounded-xl max-w-4xl mx-auto shadow-xl">
+                    <!-- Mock Dashboard Preview -->
+                    <div class="w-full h-auto bg-charcoal rounded-lg p-6 text-left relative overflow-hidden">
+                        <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                            <h2 class="text-xl font-semibold text-white">Smart Dashboard Overview</h2>
+                            <div class="flex space-x-2 text-sm">
+                                <span class="text-electric-purple font-medium">LIVE</span>
+                                <svg class="icon w-5 h-5 text-green-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 pt-6 text-center">
+                            <div class="p-3 bg-gray-800 rounded-lg">
+                                <p class="text-2xl font-bold text-electric-purple">34%</p>
+                                <p class="text-xs text-gray-400 mt-1">Conv. Rate</p>
+                            </div>
+                            <div class="p-3 bg-gray-800 rounded-lg">
+                                <p class="text-2xl font-bold text-white">$12,450</p>
+                                <p class="text-xs text-gray-400 mt-1">Earnings (30d)</p>
+                            </div>
+                            <div class="p-3 bg-gray-800 rounded-lg col-span-2 md:col-span-1">
+                                <p class="text-2xl font-bold text-green-400">99%</p>
+                                <p class="text-xs text-gray-400 mt-1">Avg. Response Time</p>
+                            </div>
+                            <div class="p-3 bg-gray-800 rounded-lg col-span-2 md:col-span-1">
+                                <p class="text-2xl font-bold text-white">4.9</p>
+                                <p class="text-xs text-gray-400 mt-1">Client Rating</p>
+                            </div>
+                            <div class="p-3 bg-gray-800 rounded-lg col-span-2 md:col-span-1">
+                                <p class="text-2xl font-bold text-yellow-400">12</p>
+                                <p class="text-xs text-gray-400 mt-1">Active Leads</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 md:py-28 bg-deep-black">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-semibold uppercase tracking-widest text-electric-purple mb-3 block">
+                        Core Intelligence
+                    </span>
+                    <h2 class="text-4xl sm:text-5xl font-bold text-white">
+                        Automation Tools Built for Scale
+                    </h2>
+                    <p class="mt-4 text-xl text-gray-400 max-w-3xl mx-auto">
+                        We handle the repetitive client management tasks so you can focus 100% on delivering exceptional work.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Feature 1: Auto-Reply & Messaging -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg hover:shadow-sm-purple-glow transition duration-300">
+                        <div class="p-4 rounded-full bg-electric-purple/20 inline-block mb-4">
+                            <svg class="icon w-6 h-6 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12"/><path d="M22 10 16 18H4"/><path d="M20 18v2"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-3">Instant AI Replies</h3>
+                        <p class="text-gray-400">
+                            Never miss a lead. Our AI instantly drafts and sends personalized, professional responses to common inquiries based on your service details and tone.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2: AI Offer Creation -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg hover:shadow-sm-purple-glow transition duration-300">
+                        <div class="p-4 rounded-full bg-electric-purple/20 inline-block mb-4">
+                            <svg class="icon w-6 h-6 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="M15 11V6H9v5"/><path d="M12 11h2"/><path d="M12 11v4"/><path d="M17 11v11l-5-4-5 4V11"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-3">One-Click Custom Offers</h3>
+                        <p class="text-gray-400">
+                            Generate perfect custom offers from a conversation summary in seconds. Price estimation, scope definition, and delivery time—all AI-assisted.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3: Smart Inbox Organization -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg hover:shadow-sm-purple-glow transition duration-300">
+                        <div class="p-4 rounded-full bg-electric-purple/20 inline-block mb-4">
+                            <svg class="icon w-6 h-6 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-3">Priority Inbox & Summaries</h3>
+                        <p class="text-gray-400">
+                            Automatically triage leads, existing clients, and urgent messages. The AI summarizes long threads, giving you the context you need instantly.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4: Real-time Analytics -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg hover:shadow-sm-purple-glow transition duration-300">
+                        <div class="p-4 rounded-full bg-electric-purple/20 inline-block mb-4">
+                            <svg class="icon w-6 h-6 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m18 9-6 6-4-4-5 5"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-3">Performance Deep Dive</h3>
+                        <p class="text-gray-400">
+                            Track every KPI in real-time: Impressions, Clicks, Leads, Conversions, and Earnings. Identify what works and scale your best gigs immediately.
+                        </p>
+                    </div>
+                    
+                    <!-- Feature 5: Multi-Account Management -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg hover:shadow-sm-purple-glow transition duration-300">
+                        <div class="p-4 rounded-full bg-electric-purple/20 inline-block mb-4">
+                            <svg class="icon w-6 h-6 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-3">Secure Multi-Account</h3>
+                        <p class="text-gray-400">
+                            Manage all your Fiverr profiles (and other supported platforms) from one secure, centralized dashboard without worrying about compliance issues.
+                        </p>
+                    </div>
+
+                    <!-- Feature 6: Workflow Optimization -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg hover:shadow-sm-purple-glow transition duration-300">
+                        <div class="p-4 rounded-full bg-electric-purple/20 inline-block mb-4">
+                            <svg class="icon w-6 h-6 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-3">Organized Workflow</h3>
+                        <p class="text-gray-400">
+                            Automated task creation and status updates keep your project queue spotless. Spend less time organizing and more time creating revenue.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transformation Section (Benefits) -->
+        <section id="benefits" class="py-20 md:py-28 bg-charcoal border-t border-b border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">
+                        The Hub Effect: Transform Your Business
+                    </h2>
+                    <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                        We don't just automate; we optimize the three pillars of freelancing success to unlock your maximum earning potential.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+                    <div class="p-6 rounded-xl bg-gray-900 border border-gray-700">
+                        <p class="text-5xl font-extrabold text-electric-purple mb-2">3X</p>
+                        <h3 class="text-xl font-semibold text-white mb-3">Faster Response Times</h3>
+                        <p class="text-gray-400">
+                            Achieve near-instant response rates 24/7, satisfying platform requirements and converting leads before your competitors even wake up.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded-xl bg-gray-900 border border-gray-700">
+                        <p class="text-5xl font-extrabold text-electric-purple mb-2">+40%</p>
+                        <h3 class="text-xl font-semibold text-white mb-3">Higher Conversion Rate</h3>
+                        <p class="text-gray-400">
+                            AI-assisted offers and precise communication lead to better project scoping, increased buyer confidence, and significantly more sales.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded-xl bg-gray-900 border border-gray-700">
+                        <p class="text-5xl font-extrabold text-electric-purple mb-2">10hrs+</p>
+                        <h3 class="text-xl font-semibold text-white mb-3">Saved Weekly Work Hours</h3>
+                        <p class="text-gray-400">
+                            Eliminate the manual grind of inbox management, offer drafting, and tracking. Focus your time on billable work and client satisfaction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 md:py-28 bg-deep-black">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-semibold uppercase tracking-widest text-electric-purple mb-3 block">
+                        Flexible Plans
+                    </span>
+                    <h2 class="text-4xl sm:text-5xl font-bold text-white">
+                        Pricing Built For Every Stage
+                    </h2>
+                    <p class="mt-4 text-xl text-gray-400 max-w-3xl mx-auto">
+                        Scale from beginner to top-rated seller without breaking the bank. Start free, scale smart.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                    <!-- Plan 1: Starter (Free) -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl flex flex-col shadow-xl">
+                        <h3 class="text-2xl font-bold text-white mb-2">Starter</h3>
+                        <p class="text-gray-400 mb-6">For beginners just getting started.</p>
+                        <p class="text-5xl font-extrabold text-white mb-4">
+                            $0<span class="text-xl font-normal text-gray-500">/month</span>
+                        </p>
+                        <a href="#" class="bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl text-center hover:bg-gray-600 transition duration-300">
+                            Sign Up Free
+                        </a>
+                        <ul class="space-y-3 mt-6 text-gray-300 flex-grow">
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic AI Auto-Reply</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Single Account Connection</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Weekly Performance Snapshot</li>
+                        </ul>
+                    </div>
+
+                    <!-- Plan 2: Pro (Featured) -->
+                    <div class="bg-gray-900 border-2 border-electric-purple p-8 rounded-xl flex flex-col shadow-purple-glow/50 relative transform scale-[1.05]">
+                        <div class="absolute top-0 right-0 bg-electric-purple text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-bl-xl rounded-tr-xl">
+                            Most Popular
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
+                        <p class="text-gray-400 mb-6">For serious sellers ready to scale.</p>
+                        <p class="text-5xl font-extrabold text-white mb-4">
+                            $29<span class="text-xl font-normal text-gray-500">/month</span>
+                        </p>
+                        <a href="#" class="bg-electric-purple text-white font-bold py-3 px-6 rounded-xl text-center shadow-lg shadow-electric-purple/40 hover:bg-opacity-90 transition duration-300">
+                            Start Pro Plan
+                        </a>
+                        <ul class="space-y-3 mt-6 text-gray-300 flex-grow">
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Full AI-Assisted Offer Creation</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Smart Inbox Triage & Summaries</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Real-Time, Granular Analytics</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Connect up to 3 Accounts</li>
+                        </ul>
+                    </div>
+
+                    <!-- Plan 3: Elite -->
+                    <div class="bg-gray-900 border border-gray-800 p-8 rounded-xl flex flex-col shadow-xl">
+                        <h3 class="text-2xl font-bold text-white mb-2">Elite</h3>
+                        <p class="text-gray-400 mb-6">For agencies and high-volume sellers.</p>
+                        <p class="text-5xl font-extrabold text-white mb-4">
+                            $79<span class="text-xl font-normal text-gray-500">/month</span>
+                        </p>
+                        <a href="#" class="bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl text-center hover:bg-gray-600 transition duration-300">
+                            Contact Sales
+                        </a>
+                        <ul class="space-y-3 mt-6 text-gray-300 flex-grow">
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>All Pro Features, Unlimited Usage</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Unlimited Account Connections</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dedicated Account Manager</li>
+                            <li class="flex items-center"><svg class="icon w-5 h-5 mr-2 text-electric-purple" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Custom AI Training Models</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA/Contact Section -->
+        <section id="contact" class="py-20 md:py-28 bg-deep-black border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-charcoal p-10 md:p-16 rounded-xl text-center border border-gray-800">
+                    <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">
+                        Ready to Scale Effortlessly?
+                    </h2>
+                    <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                        Join thousands of successful freelancers who rely on AI to work smarter, not harder. Your growth starts now.
+                    </p>
+                    <a href="#" class="bg-electric-purple text-white font-bold py-3 px-10 rounded-xl text-lg shadow-lg shadow-electric-purple/50 hover:shadow-purple-glow transition duration-300 transform hover:scale-[1.02]">
+                        Start Your 7-Day Free Trial
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+                <!-- Logo & Mission -->
+                <div class="col-span-2 md:col-span-2">
+                    <a href="#" class="text-2xl font-extrabold tracking-tight text-white flex items-center mb-4">
+                        <span class="text-electric-purple mr-1">Fiverra</span>
+                        <span class="text-white">Hub</span>
+                    </a>
+                    <p class="text-gray-400 text-sm max-w-xs">
+                        The ultimate AI automation platform for Fiverr sellers and digital freelancers. Automate, optimize, and earn more.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Platform</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#features" class="text-gray-400 hover:text-electric-purple transition duration-200">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-electric-purple transition duration-200">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-electric-purple transition duration-200">API Documentation</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#contact" class="text-gray-400 hover:text-electric-purple transition duration-200">Help Center</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-electric-purple transition duration-200">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-electric-purple transition duration-200">System Status</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-electric-purple transition duration-200">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-electric-purple transition duration-200">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center">
+                <p class="text-gray-500 text-sm">
+                    &copy; 2025 Fiverr Automation Hub. All rights reserved. Built for modern digital freelancers.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script to render Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
